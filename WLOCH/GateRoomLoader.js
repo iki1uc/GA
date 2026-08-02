@@ -1,14 +1,9 @@
-export async function loadRoom(name) {
-  const response = await fetch(`./${name}.room`);
-  return await response.json();
-}
-
 export async function loadAllRooms() {
-  const rooms = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta"];
+  const rooms = ["GA", "meKI", "MIE"];
   const data = {};
 
   for (const r of rooms) {
-    data[r] = await loadRoom(r);
+    data[r] = await loadRoom(`${r}.room`);
   }
 
   return data;
