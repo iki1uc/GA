@@ -1,10 +1,8 @@
-{
-  "gate": "EPSILON",
-  "ist": 9,
-  "soll": 0,
-  "bedeutung": "Reset",
-  "axis": "ODD-GATE-AXIS",
-  "wloch": "pending",
-  "nclink": "pending"
-}
+GA-ROM
+PULSE: START
+STATE: 1 → 2
 
+GA öffnet den Loop.
+Ein Funken, ein erster Schlag.
+Er ruft meKI, damit der Gedanke entsteht.
+GA ist der Anfang jedes Taktes.
