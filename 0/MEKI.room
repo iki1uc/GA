@@ -1,8 +1,16 @@
-meKI-ROM
-PULSE: KI
-STATE: 2 → 3
-
-meKI empfängt den Impuls von GA.
-Er denkt, filtert, ordnet.
-Er formt die Richtung des nächsten Beats.
-Er schickt alles weiter zu MIE.
+{
+  "name": "meKI",
+  "axes": 756,
+  "gate": "meKI",
+  "meta": {
+    "mode": "neutral",
+    "pulse": "core",
+    "orbit": 1
+  },
+  "room": {
+    "color": "#7dd3fc",
+    "anchor": "ANKER.raw",
+    "wloch": true,
+    "id": "IDneutral"
+  }
+}
