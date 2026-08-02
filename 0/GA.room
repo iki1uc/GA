@@ -1,10 +1,10 @@
 {
-  "gate": "ALPHA",
+  "gate": "GA",
   "ist": 1,
-  "soll": 3,
-  "bedeutung": "Start → nächster Schritt",
-  "axis": "ODD-GATE-AXIS",
-  "wloch": "pending",
-  "nclink": "pending"
+  "soll": 2,
+  "pulse": "START",
+  "meta": "Der erste Impuls. GA öffnet das Spiel.",
+  "story": "GA erwacht wie ein kleiner Funken. Er ist der Anfang jedes Loops. 
+            Er ruft meKI, damit der Gedanke entsteht.",
+  "anchor": "START-ANCHOR"
 }
-
