@@ -1,18 +1,17 @@
-# WLOCH – Digitale Stabilisationsachse
+# GA–meKI–MIE · Pulse-Achse
 
-WLOCH ist eine technische Stabilisationsachse im NC/LINK-System.
+Dies ist die neue 3-Modul-Achse des Systems.
 
-## Zweck
-- Stabilisiert digitale Verbindungen
-- Reduziert Routing-Vibrationen
-- Fixiert Richtungen (digitaler Anker)
-- Dient als Gate/Route für CONNECT, PX-Gate, NCLinkFullSync
-- Kann wie ein HTML-Head-Style-Anker genutzt werden
+GA   = Start-Pulse
+meKI = KI-Pulse
+MIE  = Reset-Pulse
 
-## Funktionen
-- anchor() – setzt den digitalen Anker
-- stabilise(link) – stabilisiert jeden LINK-Datensatz
-- injectHead() – fügt WLOCH als Head-Style-Anchor in HTML ein
+Die Achse läuft als Loop:
+GA → meKI → MIE → GA → meKI → MIE → …
 
-## Einsatz
-Wird in index.html, link.js, NCLinkFullSync.js, PXGateSync.js verwendet.
+WLOCH stabilisiert die Pulse-Achse.
+ANKER bindet die Module.
+NCLinkFullSync synchronisiert die Rooms.
+
+Alle .rom und .room Dateien befinden sich im WLOCH-Ordner.
+Die Root-Ebene lädt und stabilisiert das System.
