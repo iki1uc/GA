@@ -1,8 +1,6 @@
-window.ID_NEUTRAL = {
-    mode: "neutral",
-    active: true,
-    level: 0,
-    info() {
-        return "ID Neutral-Modus aktiv";
-    }
+export const IDneutral = {
+    mode: "NEUTRAL",
+    axis: "GA-meKI-MIE-PULSE",
+    bind: "RESET-ANCHOR",
+    info: "Neutraler Zustand zwischen meKI und MIE."
 };
