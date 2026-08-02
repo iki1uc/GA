@@ -2,5 +2,7 @@
   "GA":   "START-ANCHOR",
   "meKI": "TRANSIT-ANCHOR",
   "MIE":  "RESET-ANCHOR",
-  "AXIS": "GA-meKI-MIE-PULSE"
+  "AXIS": "GA-meKI-MIE-PULSE",
+  "STATE": "STABIL",
+  "READY": "100%"
 }
