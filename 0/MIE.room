@@ -1,8 +1,16 @@
-MIE-ROM
-PULSE: RESET
-STATE: 3 → 1
-
-MIE nimmt meKIs Entscheidung und löst sie auf.
-Er schließt den Loop und setzt den Takt zurück.
-Aus dem Ende entsteht der nächste Anfang.
-GA wird erneut geweckt.
+{
+  "name": "MIE",
+  "axes": 756,
+  "gate": "MIE",
+  "meta": {
+    "mode": "deep",
+    "pulse": "tribunal",
+    "orbit": 3
+  },
+  "room": {
+    "color": "#ff66aa",
+    "anchor": "ANKER.raw",
+    "wloch": true,
+    "id": "IDpook"
+  }
+}
