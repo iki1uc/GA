@@ -1,67 +1,83 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>ODD-GATE-AXIS · AUTO SYSTEM</title>
-<style>
-body { background:#111; color:#eee; font-family:Arial; }
-h1 { color:#6cf; }
-.section { padding:10px; border:1px solid #333; margin-bottom:20px; }
-pre { background:#222; padding:10px; }
-button { padding:10px; background:#6cf; border:none; cursor:pointer; }
-button:hover { background:#9ef; }
-</style>
-</head>
-<body>
-
-<h1>ODD-GATE-AXIS · AUTO · SHOW MUST BEGIN</h1>
-
-<div class="section">
-  <h2>ROOM DATA</h2>
-  <pre id="roomOut">Noch keine Daten…</pre>
-</div>
-
-<div class="section">
-  <h2>WLOCH Stabilisation</h2>
-  <pre id="wlochOut">Bereit…</pre>
-</div>
-
-<div class="section">
-  <h2>NC-LINK Routing</h2>
-  <pre id="linkOut">Bereit…</pre>
-</div>
-
-<button onclick="startGate()">DATEN LADEN</button>
-
 <script type="module">
+
 import { loadAllRooms } from "./GateRoomLoader.js";
-import { stabiliseRoom } from "./GATE_WLOCH.js";
-import { syncRoom } from "./GATE_LINK.js";
+import { stabiliseRoom } from "./stabiliseRoom.js";
+import { IDkoop } from "./IDkoop.js";
+import { IDneutral } from "./IDneutral.js";
+import { IDpook } from "./IDpook.js";
+import ANKER from "./ANKER.json" assert { type: "json" };
 
-window.startGate = async () => {
-
-  // 1. Alle neuen room Dateien laden
-  const rooms = await loadAllRooms();
-  document.getElementById("roomOut").innerText =
-    JSON.stringify(rooms, null, 2);
-
-  // 2. WLOCH auf jeden Raum anwenden
-  const wloch = {};
-  for (const r in rooms) {
-    wloch[r] = stabiliseRoom(rooms[r]);
-  }
-  document.getElementById("wlochOut").innerText =
-    JSON.stringify(wloch, null, 2);
-
-  // 3. NC-LINK auf jeden Raum anwenden
-  const link = {};
-  for (const r in rooms) {
-    link[r] = syncRoom(rooms[r]);
-  }
-  document.getElementById("linkOut").innerText =
-    JSON.stringify(link, null, 2);
+// 756-Achsen Meta-Format
+const AXIS_756 = {
+    pulse: ["GA", "meKI", "MIE"],
+    tech: ["IX", "XI", "X4"],
+    mode: ["ALL-IN", "ALL-OUT"],
+    raw: "./ANKER.raw"
 };
-</script>
 
-</body>
-</html>
+async function runALLXALL(){
+
+    // 1. ALLE ROOMS LADEN
+    const rooms = await loadAllRooms();
+
+    // 2. ALLE ROM-DATEIEN LADEN
+    const roms = {};
+    for(const key of AXIS_756.pulse){
+        roms[key] = await fetch(`./WLOCH/${key}.rom`).then(r=>r.text());
+    }
+
+    // 3. ANKER + RAW LADEN
+    const anchor = ANKER;
+    const raw = await fetch(AXIS_756.raw).then(r=>r.text());
+
+    // 4. ID-MODULE
+    const ID = { IDkoop, IDneutral, IDpook };
+
+    // 5. META-STATE
+    let current = rooms.GA;
+    let tick = 0;
+
+    setInterval(()=>{
+
+        // 6. Stabilisation
+        const next = stabiliseRoom(current);
+
+        // 7. IX / XI / X4 TECH
+        const IX = tick % 9;
+        const XI = tick % 11;
+        const X4 = tick % 4;
+
+        // 8. ALL-IN / ALL-OUT
+        const MODE = (tick % 2 === 0) ? "ALL-IN" : "ALL-OUT";
+
+        // 9. META-DATENPAKET
+        const META = {
+            axis: AXIS_756,
+            mode: MODE,
+            tick,
+            IX,
+            XI,
+            X4,
+            room: current,
+            rom: roms[current.gate],
+            anchor,
+            raw,
+            id: ID,
+            pulse: next
+        };
+
+        console.log("ALLXALL META:", META);
+
+        // 10. Routing über Pulse-Achse
+        if(next.soll === 2) current = rooms.meKI;
+        if(next.soll === 3) current = rooms.MIE;
+        if(next.soll === 1) current = rooms.GA;
+
+        tick++;
+
+    }, 300);
+}
+
+runALLXALL();
+
+</script>
