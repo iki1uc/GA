@@ -1,3 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>ALLXALL · 2268</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<style>
+  body {
+    background:#000;
+    color:#7dd3fc;
+    font-family:monospace;
+    margin:0;
+    overflow:hidden;
+  }
+  #main {
+    padding:20px;
+    font-size:20px;
+  }
+  #final {
+    display:none;
+    position:fixed;
+    top:0; left:0; right:0; bottom:0;
+    background:#000;
+    color:#7dd3fc;
+    font-family:monospace;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+    z-index:99999;
+  }
+  button {
+    background:#ffaa00;
+    color:#000;
+    padding:12px 20px;
+    border:none;
+    border-radius:6px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:20px;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="main">
+  <div id="status">Lade ALLXALL‑2268…</div>
+  <button onclick="onExecute()">ZUG AUSFÜHREN</button>
+</div>
+
+<div id="final"></div>
+
 <script type="module">
 
 import { addCombo, executeCombo } from "./RUN/combo.js";
@@ -5,97 +59,111 @@ import { applyColorRules } from "./RUN/score.js";
 import { nextGate, orbitGate } from "./RUN/gates.js";
 import { techPulse } from "./RUN/tech.js";
 import { RealityPulse } from "./RUN/realitypulse.js";
-import { MIACORE } from "./RUN/mia-core.js";
 import { MIATribunal } from "./RUN/mia-tribunal.js";
 import { stabiliseRoom } from "./RUN/wloch.js";
 import { ecoShift } from "./RUN/eco-shift.js";
 import { loadAllRooms } from "./GateRoomLoader.js";
 
+/* ⭐ SYSTEMVARIABLEN */
 let turns = 0;
 let score = 0;
 let tick = 0;
-let gate = "meKI";        // SPIEL STARTET BEI meKI
+let gate = "meKI";
 let rooms = {};
 let currentRoom = null;
 
-async function initGame(){
-    rooms = await loadAllRooms();
-    currentRoom = rooms.meKI;   // Startpunkt
-}
-
-initGame();
-
-// Untere Buttons → keine Kosten
-export function onLowerButton(action){
-    addCombo(action);
-}
-
-// Ausführende Instanz → alles zusammen = EIN Zug
-export function onExecute(){
-
-/* ⭐ SYSTEM-DIAGNOSE */
-async function systemCheck(){
+/* ⭐ SYSTEMCHECK + ROOMLOAD */
+async function initSystem(){
   try {
-    const rooms = await loadAllRooms();
+    rooms = await loadAllRooms();
 
     if(!rooms.meKI || !rooms.GA || !rooms.MIE){
-      alert("FEHLER: 3-Stationen-System unvollständig.\nBitte prüfe: meKI.room, GA.room, MIE.room");
+      document.getElementById("status").textContent =
+        "FEHLER: 3×756 Rooms fehlen. Benötigt: meKI.room, GA.room, MIE.room";
       return;
     }
 
-    alert("SYSTEM OK · 3×756 Räume geladen · ALLXALL aktiv.");
+    currentRoom = rooms.meKI;
+
+    document.getElementById("status").textContent =
+      "SYSTEM OK · 2268 Räume geladen · Start: meKI";
+
   } catch(e){
-    alert("FEHLER beim Laden der Rooms:\n" + e.message);
+    document.getElementById("status").textContent =
+      "FEHLER beim Laden der Rooms: " + e.message;
   }
 }
 
-systemCheck();
+initSystem();
 
-    
-    turns++;
+/* ⭐ UNTERE BUTTONS */
+export function onLowerButton(action){
+  addCombo(action);
+}
 
-    // 1. Combo ausführen
-    const comboResult = executeCombo();
+/* ⭐ HAUPTZUG */
+export function onExecute(){
 
-    // 2. Farben-Regeln anwenden
-    score = applyColorRules(comboResult, score, turns);
+  turns++;
 
-    // 3. 3-RESPO-GATEN
-    gate = nextGate(gate);
+  const comboResult = executeCombo();
+  score = applyColorRules(comboResult, score, turns);
 
-    // 4. ALLXALL-Orbit
-    gate = orbitGate(turns);
+  gate = nextGate(gate);
+  gate = orbitGate(turns);
 
-    // 5. 756-Achsen Tech
-    const tech = techPulse(tick);
+  const tech = techPulse(tick);
+  const pulse = stabiliseRoom(currentRoom);
+  const reality = RealityPulse(currentRoom, tick);
 
-    // 6. WLOCH-Pulse
-    const pulse = stabiliseRoom(currentRoom);
+  const verdict = MIATribunal({
+    pulse,
+    tech,
+    mode: reality.meta.mode,
+    score,
+    turns,
+    gate
+  });
 
-    // 7. RealityPulse
-    const reality = RealityPulse(currentRoom, tick);
+  ecoShift(reality);
 
-    // 8. MIA-CORE + MIA-TRIBUNAL
-    const verdict = MIATribunal({
-        pulse,
-        tech,
-        mode: reality.meta.mode,
-        score,
-        turns,
-        gate
-    });
+  tick++;
 
-    console.log("GAME-VERDICT:", verdict);
+  if(turns >= 13){
+    endGame(verdict);
+  }
+}
 
-    // 9. ECO-3D Shift-Indexer
-    ecoShift(reality);
+/* ⭐ FINALE */
+function endGame(verdict){
+  const F = document.getElementById("final");
 
-    tick++;
+  F.innerHTML = `
+    <div style="font-size:40px; margin-bottom:20px;">ALLXALL · Finale</div>
+    <div style="margin-bottom:20px;">Züge: ${turns}</div>
+    <div style="margin-bottom:20px;">Score: ${score}</div>
+    <div style="margin-bottom:20px;">Gate: ${gate}</div>
+    <div style="margin-bottom:20px;">Verdict: ${verdict}</div>
+    <button onclick="resetGame()">NEUSTART</button>
+  `;
 
-    // 10. Spielende nach 13 Zügen
-    if(turns >= 13){
-        endGame(verdict);
-    }
+  F.style.display = "flex";
+}
+
+/* ⭐ NEUSTART */
+function resetGame(){
+  turns = 0;
+  score = 0;
+  tick = 0;
+  gate = "meKI";
+  currentRoom = rooms.meKI;
+
+  document.getElementById("final").style.display = "none";
+  document.getElementById("status").textContent =
+    "SYSTEM OK · Neustart · Start: meKI";
 }
 
 </script>
+
+</body>
+</html>
