@@ -1,0 +1,10 @@
+{
+  "gate": "EPSILON",
+  "ist": 9,
+  "soll": 0,
+  "bedeutung": "Reset",
+  "axis": "ODD-GATE-AXIS",
+  "wloch": "pending",
+  "nclink": "pending"
+}
+

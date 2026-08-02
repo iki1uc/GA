@@ -1,0 +1,9 @@
+{
+  "gate": "DELTA",
+  "ist": 7,
+  "soll": 9,
+  "bedeutung": "Weiter auf der Achse",
+  "axis": "ODD-GATE-AXIS",
+  "wloch": "pending",
+  "nclink": "pending"
+}

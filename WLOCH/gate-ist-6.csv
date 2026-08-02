@@ -1,0 +1,7 @@
+﻿GATE,IST,SOLL,Bedeutung
+ALPHA,1,3,Start → nächster Schritt
+BETA,3,5,Weiter auf der Achse
+GAMMA,5,7,Weiter auf der Achse
+DELTA,7,9,Weiter auf der Achse
+EPSILON,9,0,Reset
+ZETA,0,1,Neustart

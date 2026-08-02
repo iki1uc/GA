@@ -1,0 +1,10 @@
+{
+  "gate": "ZETA",
+  "ist": 0,
+  "soll": 1,
+  "bedeutung": "Neustart",
+  "axis": "ODD-GATE-AXIS",
+  "wloch": "pending",
+  "nclink": "pending"
+}
+

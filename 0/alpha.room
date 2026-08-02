@@ -1,0 +1,10 @@
+{
+  "gate": "ALPHA",
+  "ist": 1,
+  "soll": 3,
+  "bedeutung": "Start → nächster Schritt",
+  "axis": "ODD-GATE-AXIS",
+  "wloch": "pending",
+  "nclink": "pending"
+}
+
