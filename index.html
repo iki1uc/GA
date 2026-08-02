@@ -33,6 +33,25 @@ export function onLowerButton(action){
 // Ausführende Instanz → alles zusammen = EIN Zug
 export function onExecute(){
 
+/* ⭐ SYSTEM-DIAGNOSE */
+async function systemCheck(){
+  try {
+    const rooms = await loadAllRooms();
+
+    if(!rooms.meKI || !rooms.GA || !rooms.MIE){
+      alert("FEHLER: 3-Stationen-System unvollständig.\nBitte prüfe: meKI.room, GA.room, MIE.room");
+      return;
+    }
+
+    alert("SYSTEM OK · 3×756 Räume geladen · ALLXALL aktiv.");
+  } catch(e){
+    alert("FEHLER beim Laden der Rooms:\n" + e.message);
+  }
+}
+
+systemCheck();
+
+    
     turns++;
 
     // 1. Combo ausführen
