@@ -1,0 +1,8 @@
+{
+  "gate": "GA",
+  "ist": 1,
+  "soll": 2,
+  "anchor": "START-ANCHOR",
+  "meta": "Pulse-Start",
+  "story": "GA setzt den ersten Beat."
+}
