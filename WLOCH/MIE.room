@@ -1,8 +1,0 @@
-{
-  "gate": "MIE",
-  "ist": 3,
-  "soll": 1,
-  "anchor": "RESET-ANCHOR",
-  "meta": "Reset-Loop",
-  "story": "MIE schließt den Takt und startet GA neu."
-}
