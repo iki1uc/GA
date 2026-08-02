@@ -1,9 +1,6 @@
 {
-  "IQ": true,
-  "QI": true,
-  "EVO": true,
-  "UPD": true,
-  "UPG": true,
-  "BIOS": true,
-  "CALC": true
+  "GA":   "START-ANCHOR",
+  "meKI": "TRANSIT-ANCHOR",
+  "MIE":  "RESET-ANCHOR",
+  "AXIS": "GA-meKI-MIE-PULSE"
 }
