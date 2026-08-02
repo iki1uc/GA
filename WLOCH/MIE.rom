@@ -1,0 +1,7 @@
+MIE-ROM
+PULSE: RESET
+STATE: 3 → 1
+
+MIE löst den Impuls auf.
+Er schließt den Loop und setzt den Takt zurück.
+GA wird erneut geweckt.
