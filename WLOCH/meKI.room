@@ -1,0 +1,8 @@
+{
+  "gate": "meKI",
+  "ist": 2,
+  "soll": 3,
+  "anchor": "TRANSIT-ANCHOR",
+  "meta": "KI-Transit",
+  "story": "meKI ordnet den Impuls."
+}
