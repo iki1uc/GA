@@ -1,83 +1,82 @@
 <script type="module">
 
+import { addCombo, executeCombo } from "./RUN/combo.js";
+import { applyColorRules } from "./RUN/score.js";
+import { nextGate, orbitGate } from "./RUN/gates.js";
+import { techPulse } from "./RUN/tech.js";
+import { RealityPulse } from "./RUN/realitypulse.js";
+import { MIACORE } from "./RUN/mia-core.js";
+import { MIATribunal } from "./RUN/mia-tribunal.js";
+import { stabiliseRoom } from "./RUN/wloch.js";
+import { ecoShift } from "./RUN/eco-shift.js";
 import { loadAllRooms } from "./GateRoomLoader.js";
-import { stabiliseRoom } from "./stabiliseRoom.js";
-import { IDkoop } from "./IDkoop.js";
-import { IDneutral } from "./IDneutral.js";
-import { IDpook } from "./IDpook.js";
-import ANKER from "./ANKER.json" assert { type: "json" };
 
-// 756-Achsen Meta-Format
-const AXIS_756 = {
-    pulse: ["GA", "meKI", "MIE"],
-    tech: ["IX", "XI", "X4"],
-    mode: ["ALL-IN", "ALL-OUT"],
-    raw: "./ANKER.raw"
-};
+let turns = 0;
+let score = 0;
+let tick = 0;
+let gate = "meKI";        // SPIEL STARTET BEI meKI
+let rooms = {};
+let currentRoom = null;
 
-async function runALLXALL(){
-
-    // 1. ALLE ROOMS LADEN
-    const rooms = await loadAllRooms();
-
-    // 2. ALLE ROM-DATEIEN LADEN
-    const roms = {};
-    for(const key of AXIS_756.pulse){
-        roms[key] = await fetch(`./WLOCH/${key}.rom`).then(r=>r.text());
-    }
-
-    // 3. ANKER + RAW LADEN
-    const anchor = ANKER;
-    const raw = await fetch(AXIS_756.raw).then(r=>r.text());
-
-    // 4. ID-MODULE
-    const ID = { IDkoop, IDneutral, IDpook };
-
-    // 5. META-STATE
-    let current = rooms.GA;
-    let tick = 0;
-
-    setInterval(()=>{
-
-        // 6. Stabilisation
-        const next = stabiliseRoom(current);
-
-        // 7. IX / XI / X4 TECH
-        const IX = tick % 9;
-        const XI = tick % 11;
-        const X4 = tick % 4;
-
-        // 8. ALL-IN / ALL-OUT
-        const MODE = (tick % 2 === 0) ? "ALL-IN" : "ALL-OUT";
-
-        // 9. META-DATENPAKET
-        const META = {
-            axis: AXIS_756,
-            mode: MODE,
-            tick,
-            IX,
-            XI,
-            X4,
-            room: current,
-            rom: roms[current.gate],
-            anchor,
-            raw,
-            id: ID,
-            pulse: next
-        };
-
-        console.log("ALLXALL META:", META);
-
-        // 10. Routing über Pulse-Achse
-        if(next.soll === 2) current = rooms.meKI;
-        if(next.soll === 3) current = rooms.MIE;
-        if(next.soll === 1) current = rooms.GA;
-
-        tick++;
-
-    }, 300);
+async function initGame(){
+    rooms = await loadAllRooms();
+    currentRoom = rooms.meKI;   // Startpunkt
 }
 
-runALLXALL();
+initGame();
+
+// Untere Buttons → keine Kosten
+export function onLowerButton(action){
+    addCombo(action);
+}
+
+// Ausführende Instanz → alles zusammen = EIN Zug
+export function onExecute(){
+
+    turns++;
+
+    // 1. Combo ausführen
+    const comboResult = executeCombo();
+
+    // 2. Farben-Regeln anwenden
+    score = applyColorRules(comboResult, score, turns);
+
+    // 3. 3-RESPO-GATEN
+    gate = nextGate(gate);
+
+    // 4. ALLXALL-Orbit
+    gate = orbitGate(turns);
+
+    // 5. 756-Achsen Tech
+    const tech = techPulse(tick);
+
+    // 6. WLOCH-Pulse
+    const pulse = stabiliseRoom(currentRoom);
+
+    // 7. RealityPulse
+    const reality = RealityPulse(currentRoom, tick);
+
+    // 8. MIA-CORE + MIA-TRIBUNAL
+    const verdict = MIATribunal({
+        pulse,
+        tech,
+        mode: reality.meta.mode,
+        score,
+        turns,
+        gate
+    });
+
+    console.log("GAME-VERDICT:", verdict);
+
+    // 9. ECO-3D Shift-Indexer
+    ecoShift(reality);
+
+    tick++;
+
+    // 10. Spielende nach 13 Zügen
+    if(turns >= 13){
+        endGame(verdict);
+    }
+}
 
 </script>
