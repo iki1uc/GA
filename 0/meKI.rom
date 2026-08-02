@@ -1,10 +1,8 @@
-{
-  "gate": "GAMMA",
-  "ist": 5,
-  "soll": 7,
-  "bedeutung": "Weiter auf der Achse",
-  "axis": "ODD-GATE-AXIS",
-  "wloch": "pending",
-  "nclink": "pending"
-}
+meKI-ROM
+PULSE: KI
+STATE: 2 → 3
 
+meKI empfängt den Impuls von GA.
+Er denkt, filtert, ordnet.
+Er formt die Richtung des nächsten Beats.
+Er schickt alles weiter zu MIE.
