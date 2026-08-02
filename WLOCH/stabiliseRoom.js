@@ -5,6 +5,6 @@ export function stabiliseRoom(room) {
     gate: room.gate,
     ist: room.ist,
     soll: room.soll,
-    axis: "ODD-GATE-AXIS"
+    anchor: room.anchor
   });
 }
