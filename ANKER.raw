@@ -1,7 +1,6 @@
-IQ
-QI
-EVO
-UPD
-UPG
-BIOS
-CALC
+ANKER = Pulse-Bindung
+GA    = Startpunkt
+meKI  = Denkpunkt
+MIE   = Resetpunkt
+AXIS  = GA → meKI → MIE
+MODE  = Loop
