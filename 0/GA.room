@@ -1,8 +1,16 @@
-GA-ROM
-PULSE: START
-STATE: 1 → 2
-
-GA öffnet den Loop.
-Ein Funken, ein erster Schlag.
-Er ruft meKI, damit der Gedanke entsteht.
-GA ist der Anfang jedes Taktes.
+{
+  "name": "GA",
+  "axes": 756,
+  "gate": "GA",
+  "meta": {
+    "mode": "active",
+    "pulse": "respo",
+    "orbit": 2
+  },
+  "room": {
+    "color": "#ffaa00",
+    "anchor": "ANKER.json",
+    "wloch": true,
+    "id": "IDkoop"
+  }
+}
