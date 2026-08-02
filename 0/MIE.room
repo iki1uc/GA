@@ -1,9 +1,10 @@
 {
-  "gate": "DELTA",
-  "ist": 7,
-  "soll": 9,
-  "bedeutung": "Weiter auf der Achse",
-  "axis": "ODD-GATE-AXIS",
-  "wloch": "pending",
-  "nclink": "pending"
+  "gate": "MIE",
+  "ist": 3,
+  "soll": 1,
+  "pulse": "RESET",
+  "meta": "Der Reset‑Impuls. MIE schließt den Kreis.",
+  "story": "MIE nimmt meKIs Entscheidung und löst sie auf. 
+            Er setzt den Loop zurück zu GA, damit der nächste Beat beginnt.",
+  "anchor": "RESET-ANCHOR"
 }
