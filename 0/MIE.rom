@@ -1,10 +1,8 @@
-{
-  "gate": "ZETA",
-  "ist": 0,
-  "soll": 1,
-  "bedeutung": "Neustart",
-  "axis": "ODD-GATE-AXIS",
-  "wloch": "pending",
-  "nclink": "pending"
-}
+MIE-ROM
+PULSE: RESET
+STATE: 3 → 1
 
+MIE nimmt meKIs Entscheidung und löst sie auf.
+Er schließt den Loop und setzt den Takt zurück.
+Aus dem Ende entsteht der nächste Anfang.
+GA wird erneut geweckt.
